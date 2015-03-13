@@ -22,7 +22,7 @@ int main(void)
 	/* Name */
 	cout << "Enter Name\n:";
 
-	cin >> input;
+	getline(cin, input);
 
 	validateName(input);
 
@@ -33,7 +33,7 @@ int main(void)
 	{
 		// Input
 		cout << "City\n:";
-		cin >> input;
+		getline(cin, input);
 
 		// Validation
 		if (validateCity(input) != VALID)
