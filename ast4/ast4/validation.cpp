@@ -2,6 +2,12 @@
 
 using namespace std;
 
+/*
+	Function: validateName
+	Description: Function used to validate the name specified by the user.
+	Parameters: name - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateName(string name)
 {
 	int result = VALID;
@@ -10,6 +16,7 @@ int validateName(string name)
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
 	locale loc;
 
+	//used to convert the string passed in to lower case
 	for (i = 0; i < name.length(); i++)
 	{
 		try
@@ -29,6 +36,7 @@ int validateName(string name)
 	{
 		result = INVALID;
 	}
+	//checks if there is any instance of an invalid character in the name string
 	else if (name.find_first_not_of(validName) != string::npos)
 	{
 		result = INVALID;
@@ -131,6 +139,12 @@ int validateProvince(string province)
 	return result;
 }
 
+/*
+	Function: validatePostal
+	Description: Function used to validate the postal code specified by the user.
+	Parameters: postal - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validatePostal(string postal)
 {
 	int result = VALID;
@@ -138,6 +152,7 @@ int validatePostal(string postal)
 	string validLetter = "ABCEGHJKLMNPRSTVWXYZ";
 	locale loc;
 
+	//used to convert the string passed in to upper case
 	for (int i = 0; i < postal.length(); i++)
 	{
 		try
@@ -159,7 +174,7 @@ int validatePostal(string postal)
 	}
 	else
 	{
-
+		//check against the valid letters for a postal code.
 		if (firstValidLetter.find(postal[0]) == string::npos)
 		{
 			result = INVALID;
