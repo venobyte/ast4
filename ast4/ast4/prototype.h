@@ -13,6 +13,9 @@
 #define PROVINCE_MAX 2
 #define ESC 27
 
+// All allowed provinces, terminated with NULL
+#define ALLOWED_PROVINCES {"ON", "BC", "QC", "AB", "MB", "NB", "NL", "NS", "NT", "NU", "PE", "SK", "YT", NULL}
+
 using namespace std;
 
 int validateName(string name);

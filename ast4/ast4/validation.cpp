@@ -93,7 +93,30 @@ int validateCity(string city)
 
 int validateProvince(string province)
 {
-	return 0;
+	int result = INVALID;
+	char *kAllowedProvinces[] = ALLOWED_PROVINCES;
+
+	if (province.length() > PROVINCE_MAX)
+	{
+		result = INVALID;
+	}
+	else
+	{
+		// Check against the known list
+		int i = 0;
+		const char *str = kAllowedProvinces[i];
+		while (str != NULL)
+		{
+			if (_stricmp(province.c_str(), str) == 0)
+			{
+				result = VALID;
+				break;
+			}
+
+			str = kAllowedProvinces[++i];
+		}
+	}
+	return result;
 }
 
 int validatePostal(string postal)
