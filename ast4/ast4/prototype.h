@@ -11,6 +11,7 @@
 #define PHONE_MAX 12
 #define CITY_MAX 60
 #define PROVINCE_MAX 2
+#define ESC 27
 
 using namespace std;
 
