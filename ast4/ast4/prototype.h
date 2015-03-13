@@ -8,6 +8,7 @@
 #define INVALID  1
 #define EMPTY 2
 #define POSTAL_MAX 7
+#define PHONE_MAX 12
 
 using namespace std;
 
