@@ -52,9 +52,10 @@ int validateCity(string city)
 {
 	int result = VALID;
 
-	if (city.length() == 0)
+	if (city == "")
 	{
 		// Field can be skipped if the first character is a character return.
+		return EMPTY;
 	}
 	else if (city.length() > CITY_MAX)
 	{
