@@ -154,7 +154,7 @@ int main(void)
 				}
 				else if (result == VALID)
 				{
-					
+
 					//this will change the postal code to upper case.
 					for (j = 0; j < input.length(); j++)
 					{
@@ -198,49 +198,56 @@ int main(void)
 	end = i;
 	cout << string(50, '\n');
 
-	while (result == INVALID)
+	if (infos[0].name == "")
 	{
-
-		for (i = 0; i != end && result == INVALID; i++)
+		cout << "There are no entries\n";
+	}
+	else
+	{
+		while (result == INVALID)
 		{
-			if (result == INVALID)
+
+			for (i = 0; i != end && result == INVALID; i++)
 			{
-				try
+				if (result == INVALID)
 				{
-					cout << infos[i].name << "\n";
-					cout << infos[i].street << "\n";
-					cout << infos[i].city << ", ";
-					cout << infos[i].province << ", ";
-					cout << infos[i].postal << "\n";
-					cout << infos[i].phone << "\n";
-					cout << "++++++++++++" << "\n\n";
+					try
+					{
+						cout << infos[i].name << "\n";
+						cout << infos[i].street << "\n";
+						cout << infos[i].city << ", ";
+						cout << infos[i].province << ", ";
+						cout << infos[i].postal << "\n";
+						cout << infos[i].phone << "\n";
+						cout << "++++++++++++" << "\n\n";
+					}
+					catch (exception& e)
+					{
+					}
 				}
-				catch (exception& e)
+
+				//this will paginate the output, limiting to 3 entries on the page at a time.
+				if (i == 2 || i == 5 || i == 8 || i == (end - 1))
 				{
+					cout << "Press any button to cycle through entries or press ESC to exit\n";
+
+					j = _getch();
+
+					//if the user enters escape this will end the program
+					if (j == ESC)
+					{
+						result = VALID;
+						i = end;
+					}
+					else
+					{
+						//trying to avoid the use of system.
+						cout << string(50, '\n');
+					}
 				}
 			}
 
-			//this will paginate the output, limiting to 3 entries on the page at a time.
-			if (i == 2 || i == 5 || i == 8 || i == (end - 1))
-			{
-				cout << "Press any button to cycle through entries or press ESC to exit\n";
-
-				j = _getch();
-
-				//if the user enters escape this will end the program
-				if (j == ESC)
-				{
-					result = VALID;
-					i = end;
-				}
-				else
-				{
-					//trying to avoid the use of system.
-					cout << string(50, '\n');
-				}
-			}
 		}
-
 	}
 
 	return 0;
