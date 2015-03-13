@@ -8,6 +8,18 @@ int validateName(string name)
 	int i = 0;
 	int position = 0;
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
+	locale loc;
+
+	for (i = 0; i < name.length(); i++)
+	{
+		try
+		{
+			name[i] = tolower(name[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 	if (name == "")
 	{
@@ -124,6 +136,18 @@ int validatePostal(string postal)
 	int result = VALID;
 	string firstValidLetter = "ABCEGHJKLMNPRSTVXY";
 	string validLetter = "ABCEGHJKLMNPRSTVWXYZ";
+	locale loc;
+
+	for (int i = 0; i < postal.length(); i++)
+	{
+		try
+		{
+			postal[i] = toupper(postal[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 	if (postal == "")
 	{
@@ -229,9 +253,6 @@ int validatePhone(string phone)
 		
 	}
 
-	printf("%d", result);
 	return result;
-	
-	
 
 }
