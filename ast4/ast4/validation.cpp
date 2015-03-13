@@ -50,7 +50,44 @@ int validateStreet(string street)
 
 int validateCity(string city)
 {
-	return 0;
+	int result = VALID;
+
+	if (city.length() == 0)
+	{
+		// Field can be skipped if the first character is a character return.
+	}
+	else if (city.length() > CITY_MAX)
+	{
+		// Too long
+		result = INVALID;
+	}
+	else
+	{
+		// test each character
+		for (unsigned int i = 0; i < city.length(); i++)
+		{
+			char chr = city.at(i);
+			if (chr == 0x20)
+			{
+				// Space, valid
+			}
+			else if (chr >= 0x41 && chr <= 0x90)
+			{
+				// Upper case, valid
+			}
+			else if (chr >= 0x61 && chr <= 0x7A)
+			{
+				// Lower case, valid
+			}
+			else
+			{
+				// INVALID character
+				result = INVALID;
+			}
+		}
+	}
+
+	return result;
 }
 
 int validateProvince(string province)
