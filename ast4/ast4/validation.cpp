@@ -124,5 +124,53 @@ int validatePostal(string postal)
 
 int validatePhone(string phone)
 {
-	return 0;
+	int result = VALID;
+	int i = 0;
+	string validPhone = "1234567890-. ";
+	string validPhoneChars = "-. ";
+
+	if (phone == "")
+	{
+		result = EMPTY;
+	}
+	else if (phone.length() > PHONE_MAX)
+	{
+		result = INVALID;
+	}
+	else if (phone.find_first_not_of(validPhone) != string::npos)
+	{
+		result = INVALID;
+	}
+	else
+	{
+		for (i = 0; i < PHONE_MAX; i++)
+		{
+			if (isdigit(phone[i]) == false)
+			{
+				if (isdigit(phone[3]) == false)
+				{
+					if (validPhoneChars.find(phone[3]) == string::npos)
+					{
+						result = INVALID;
+					}
+					else if ((isdigit(phone[7]) == false))
+					{
+						if (validPhoneChars.find(phone[7]) == string::npos)
+						{
+							result = INVALID;
+						}
+					}
+				}
+				
+			}
+
+		}
+		
+	}
+
+	printf("%d", result);
+	return result;
+	
+	
+
 }
