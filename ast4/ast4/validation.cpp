@@ -96,7 +96,12 @@ int validateProvince(string province)
 	int result = INVALID;
 	char *kAllowedProvinces[] = ALLOWED_PROVINCES;
 
-	if (province.length() > PROVINCE_MAX)
+	if (province == "")
+	{
+		// Field can be skipped if first character is a character return.
+		result = EMPTY;
+	}
+	else if (province.length() > PROVINCE_MAX)
 	{
 		result = INVALID;
 	}
