@@ -23,7 +23,7 @@ int main(void)
 
 	string input;
 	cout << "Logo\n";
-	while (end == 0 && i != 9)
+	while (end == 0 && i != 10)
 	{
 		while (result == INVALID)
 		{
