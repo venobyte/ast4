@@ -21,7 +21,9 @@ int main(void)
 	int i = 0;
 	int j = 0;
 
+	locale loc;
 	string input;
+
 	cout << "Logo\n";
 	while (end == 0 && i != 10)
 	{
@@ -138,6 +140,12 @@ int main(void)
 				}
 				else if (result == VALID)
 				{
+					
+					for (j = 0; j < input.length(); j++)
+					{
+						input[j] = toupper(input[j], loc);
+					}
+
 					infos[i].postal.assign(input);
 				}
 			}
