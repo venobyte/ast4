@@ -1,3 +1,10 @@
+/*
+	User Input Validation
+	Authors: Oliver Sousa, Aric Vogel, Joshua Medeiros, Kyle Eaton
+	Date: 03-13-15
+	Description: To validate user input and display the input information to the user.
+*/
+
 #include "prototype.h"
 #include <conio.h>
 
@@ -25,6 +32,7 @@ int main(void)
 	string input;
 
 	cout << "Logo\n";
+
 	while (end == 0 && i != 10)
 	{
 		while (result == INVALID)
@@ -117,6 +125,12 @@ int main(void)
 				}
 				else if (result == VALID)
 				{
+					//this will change the province to upper case.
+					for (j = 0; j < input.length(); j++)
+					{
+						input[j] = toupper(input[j], loc);
+					}
+
 					infos[i].province.assign(input);
 				}
 			}
@@ -141,6 +155,7 @@ int main(void)
 				else if (result == VALID)
 				{
 					
+					//this will change the postal code to upper case.
 					for (j = 0; j < input.length(); j++)
 					{
 						input[j] = toupper(input[j], loc);
@@ -205,11 +220,14 @@ int main(void)
 				}
 			}
 
+			//this will paginate the output, limiting to 3 entries on the page at a time.
 			if (i == 2 || i == 5 || i == 8 || i == (end - 1))
 			{
-				cout << "Press any button to continue or press ESC to exit\n";
+				cout << "Press any button to cycle through entries or press ESC to exit\n";
 
 				j = _getch();
+
+				//if the user enters escape this will end the program
 				if (j == ESC)
 				{
 					result = VALID;
@@ -217,6 +235,7 @@ int main(void)
 				}
 				else
 				{
+					//trying to avoid the use of system.
 					cout << string(50, '\n');
 				}
 			}
