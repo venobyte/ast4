@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
+#include <locale>
 
 #define NAME_MAX 30
 #define VALID 0
