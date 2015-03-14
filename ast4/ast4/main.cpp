@@ -3,7 +3,7 @@
 	Authors: Oliver Sousa, Aric Vogel, Joshua Medeiros, Kyle Eaton
 */
 
-#include "prototype.h"
+#include "validation.h"
 #include <conio.h>
 
 using namespace std;
