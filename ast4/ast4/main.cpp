@@ -1,3 +1,8 @@
+/*
+	User Input Validation
+	Authors: Oliver Sousa, Aric Vogel, Joshua Medeiros, Kyle Eaton
+*/
+
 #include "prototype.h"
 #include <conio.h>
 
@@ -25,6 +30,7 @@ int main(void)
 	string input;
 
 	cout << "Logo\n";
+
 	while (end == 0 && i != 10)
 	{
 		while (result == INVALID)
@@ -117,6 +123,12 @@ int main(void)
 				}
 				else if (result == VALID)
 				{
+					//this will change the province to upper case.
+					for (j = 0; j < input.length(); j++)
+					{
+						input[j] = toupper(input[j], loc);
+					}
+
 					infos[i].province.assign(input);
 				}
 			}
@@ -140,7 +152,8 @@ int main(void)
 				}
 				else if (result == VALID)
 				{
-					
+
+					//this will change the postal code to upper case.
 					for (j = 0; j < input.length(); j++)
 					{
 						input[j] = toupper(input[j], loc);
@@ -157,7 +170,7 @@ int main(void)
 				cout << "Enter phone number : \n";
 				getline(cin, input);
 
-				result = validatePhone(input);
+				result = validatePhone(input, infos[i].province);
 
 				if (result == EMPTY)
 				{
@@ -183,45 +196,56 @@ int main(void)
 	end = i;
 	cout << string(50, '\n');
 
-	while (result == INVALID)
+	if (infos[0].name == "")
 	{
-
-		for (i = 0; i != end && result == INVALID; i++)
+		cout << "There are no entries\n";
+	}
+	else
+	{
+		while (result == INVALID)
 		{
-			if (result == INVALID)
+
+			for (i = 0; i != end && result == INVALID; i++)
 			{
-				try
+				if (result == INVALID)
 				{
-					cout << infos[i].name << "\n";
-					cout << infos[i].street << "\n";
-					cout << infos[i].city << ", ";
-					cout << infos[i].province << ", ";
-					cout << infos[i].postal << "\n";
-					cout << infos[i].phone << "\n";
-					cout << "++++++++++++" << "\n\n";
+					try
+					{
+						cout << infos[i].name << "\n";
+						cout << infos[i].street << "\n";
+						cout << infos[i].city << ", ";
+						cout << infos[i].province << ", ";
+						cout << infos[i].postal << "\n";
+						cout << infos[i].phone << "\n";
+						cout << "++++++++++++" << "\n\n";
+					}
+					catch (exception& e)
+					{
+					}
 				}
-				catch (exception& e)
+
+				//this will paginate the output, limiting to 3 entries on the page at a time.
+				if (i == 2 || i == 5 || i == 8 || i == (end - 1))
 				{
+					cout << "Press any button to cycle through entries or press ESC to exit\n";
+
+					j = _getch();
+
+					//if the user enters escape this will end the program
+					if (j == ESC)
+					{
+						result = VALID;
+						i = end;
+					}
+					else
+					{
+						//trying to avoid the use of system.
+						cout << string(50, '\n');
+					}
 				}
 			}
 
-			if (i == 2 || i == 5 || i == 8 || i == (end - 1))
-			{
-				cout << "Press any button to continue or press ESC to exit\n";
-
-				j = _getch();
-				if (j == ESC)
-				{
-					result = VALID;
-					i = end;
-				}
-				else
-				{
-					cout << string(50, '\n');
-				}
-			}
 		}
-
 	}
 
 	return 0;
