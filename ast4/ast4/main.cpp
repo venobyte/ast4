@@ -170,7 +170,7 @@ int main(void)
 				cout << "Enter phone number : \n";
 				getline(cin, input);
 
-				result = validatePhone(input);
+				result = validatePhone(input, infos[i].province);
 
 				if (result == EMPTY)
 				{
