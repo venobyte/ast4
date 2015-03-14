@@ -261,6 +261,12 @@ int validatePostal(string postal)
 	return result;
 }
 
+/*
+Function: validatePhone
+Description: Function used to validate the phone number specified by the user.
+Parameters: phone - input passed in from the user province - province the user has set
+Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validatePhone(string phone, string province)
 {
 	int result = VALID;
