@@ -68,7 +68,12 @@ int validateName(string name)
 	return result;
 }
 
-
+/*
+	Function: validateStreet
+	Description: Function used to validate the street specified by the user.
+	Parameters: street - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateStreet(string street)
 {
 	int result = VALID;
@@ -147,6 +152,12 @@ int validateStreet(string street)
 	return result;
 }
 
+/*
+	Function: validateCity
+	Description: Function used to validate the city specified by the user.
+	Parameters: city - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateCity(string city)
 {
 	int result = VALID;
@@ -218,6 +229,12 @@ int validateCity(string city)
 	return result;
 }
 
+/*
+	Function: validateProvince
+	Description: Function used to validate the province specified by the user.
+	Parameters: province- input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateProvince(string province)
 {
 	int result = INVALID;
