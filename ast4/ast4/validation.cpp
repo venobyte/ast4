@@ -2,12 +2,31 @@
 
 using namespace std;
 
+/*
+	Function: validateName
+	Description: Function used to validate the name specified by the user.
+	Parameters: name - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateName(string name)
 {
 	int result = VALID;
 	int i = 0;
 	int position = 0;
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
+	locale loc;
+
+	//used to convert the string passed in to lower case
+	for (i = 0; i < name.length(); i++)
+	{
+		try
+		{
+			name[i] = tolower(name[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 
 	if (name == "")
@@ -18,6 +37,12 @@ int validateName(string name)
 	{
 		result = INVALID;
 	}
+	//checks to see if the first letter is non-alphabetical
+	else if (name[0] == '-' || name[0] == '\'' || name[0] == '.' || name[0] == ' ')
+	{
+		result = INVALID;
+	}
+	//checks if there is any instance of an invalid character in the name string
 	else if (name.find_first_not_of(validName) != string::npos)
 	{
 		result = INVALID;
@@ -53,9 +78,10 @@ int validateCity(string city)
 {
 	int result = VALID;
 
-	if (city.length() == 0)
+	if (city == "")
 	{
 		// Field can be skipped if the first character is a character return.
+		return EMPTY;
 	}
 	else if (city.length() > CITY_MAX)
 	{
@@ -68,15 +94,43 @@ int validateCity(string city)
 		for (unsigned int i = 0; i < city.length(); i++)
 		{
 			char chr = city.at(i);
-			if (chr == 0x20)
+			if (chr == ' ')
 			{
-				// Space, valid
+				// Space
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+				else if (city.at(i - 1) == ' ')
+				{
+					// CANNOT have two in a row
+					result = INVALID;
+				}
 			}
-			else if (chr >= 0x41 && chr <= 0x90)
+			else if (chr == '-')
+			{
+				// Dash
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+			}
+			else if (chr == '.')
+			{
+				// Dot
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+			}
+			else if (chr >= 'A' && chr <= 'Z')
 			{
 				// Upper case, valid
 			}
-			else if (chr >= 0x61 && chr <= 0x7A)
+			else if (chr >= 'a' && chr <= 'z')
 			{
 				// Lower case, valid
 			}
@@ -93,14 +147,61 @@ int validateCity(string city)
 
 int validateProvince(string province)
 {
-	return 0;
+	int result = INVALID;
+	char *kAllowedProvinces[] = ALLOWED_PROVINCES;
+
+	if (province == "")
+	{
+		// Field can be skipped if first character is a character return.
+		result = EMPTY;
+	}
+	else if (province.length() > PROVINCE_MAX)
+	{
+		result = INVALID;
+	}
+	else
+	{
+		// Check against the known list
+		int i = 0;
+		const char *str = kAllowedProvinces[i];
+		while (str != NULL)
+		{
+			if (_stricmp(province.c_str(), str) == 0)
+			{
+				result = VALID;
+				break;
+			}
+
+			str = kAllowedProvinces[++i];
+		}
+	}
+	return result;
 }
 
+/*
+	Function: validatePostal
+	Description: Function used to validate the postal code specified by the user.
+	Parameters: postal - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validatePostal(string postal)
 {
 	int result = VALID;
 	string firstValidLetter = "ABCEGHJKLMNPRSTVXY";
 	string validLetter = "ABCEGHJKLMNPRSTVWXYZ";
+	locale loc;
+
+	//used to convert the string passed in to upper case
+	for (int i = 0; i < postal.length(); i++)
+	{
+		try
+		{
+			postal[i] = toupper(postal[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 	if (postal == "")
 	{
@@ -112,7 +213,7 @@ int validatePostal(string postal)
 	}
 	else
 	{
-
+		//check against the valid letters for a postal code.
 		if (firstValidLetter.find(postal[0]) == string::npos)
 		{
 			result = INVALID;
@@ -535,9 +636,6 @@ if (province == "ON")
 		}
 	}
 
+		return result;
+}
 
-
-
-	return result;
-	
-	}
