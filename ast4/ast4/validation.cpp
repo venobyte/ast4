@@ -9,6 +9,7 @@ int validateName(string name)
 	int position = 0;
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
 
+
 	if (name == "")
 	{
 		result = EMPTY;
@@ -159,55 +160,384 @@ int validatePostal(string postal)
 	return result;
 }
 
-int validatePhone(string phone)
+int validatePhone(string phone, string province)
 {
 	int result = VALID;
 	int i = 0;
-	string validPhone = "1234567890-. ";
-	string validPhoneChars = "-. ";
-
+	string validPhone = "1234567890-. ()";
+	string validPhoneChars = "-.";
+	string areaCode = "   ";
+	
+	
+	//is phone string empty
 	if (phone == "")
 	{
+		//we can skip if phone number is empty
 		result = EMPTY;
 	}
+	//is phone number too long
 	else if (phone.length() > PHONE_MAX)
 	{
+		//too long has to invalid
 		result = INVALID;
 	}
+	//check to make sure everything is valid before we even break it down
 	else if (phone.find_first_not_of(validPhone) != string::npos)
 	{
+		//if something not valid exists in number we dont need to continue
 		result = INVALID;
 	}
-	else
+
+	//is user using brackets for area code
+	else if (phone[0] == '(')
 	{
-		for (i = 0; i < PHONE_MAX; i++)
+		//then lets make sure next three numbers are digits
+		for (i = 1; i < 4; i++)
 		{
 			if (isdigit(phone[i]) == false)
 			{
-				if (isdigit(phone[3]) == false)
+				//the area code is not digits is invalid
+				result = INVALID;
+			}
+			// make sure space is after area code
+			else if (isspace(phone[5]) == false)
+			{
+				result = INVALID;
+			}
+
+			//lets make sure that closing bracket is there
+			else if (phone[4] != ')')
+			{
+				
+
+				//we know this part so far is valid lets take the area code
+				areaCode = phone.substr(1, 3);
+
+				//next three elements after space should be digits 
+				for (i = 0; i < 3; i++)
 				{
-					if (validPhoneChars.find(phone[3]) == string::npos)
+					//if they are not digits its invalid
+					if (isdigit(phone[i + 6]) == false)
 					{
 						result = INVALID;
 					}
-					else if ((isdigit(phone[7]) == false))
+				}
+				//next digit can contain peroid dash or any number check for number first
+				if (isdigit(phone[9]) == false)
+				{
+					//not a number so make sure its valid
+					if (validPhoneChars.find(phone[9]) == string::npos)
 					{
-						if (validPhoneChars.find(phone[7]) == string::npos)
+						//not valid
+						result = INVALID;
+					}
+					//if we get here we know it is a valid character and we can continue
+					else
+					{
+						//make sure last 4 digits are numbers
+						for (i = 0; i < 4; i++)
+						{
+							//if they are not it is invalid
+							if (isdigit(phone[i + 10]) == false)
+							{
+								result = INVALID;
+							}
+						}
+					}
+
+				}
+				//is a number check last 4 elements to make sure all digits
+				else
+				{
+					for (i = 0; i < 4; i++)
+					{
+						//if they are not it is invalid
+						if (isdigit(phone[i + 9]) == false)
 						{
 							result = INVALID;
 						}
 					}
 				}
-				
 			}
 
 		}
-		
+	}
+	//if we get this far we know the area code is first three numbers
+	else
+	{
+		//seperate area code for validation
+		areaCode = phone.substr(0, 3);
+
+		//next number can be a special character or a number
+		if (isdigit(phone[3]) == false)
+		{
+			//not a number lets make sure valid
+			if (validPhoneChars.find(phone[3]) == string::npos)
+			{
+				//not Valid
+				result = INVALID;
+			}
+			//if we get here it is a valid character
+			else
+			{
+				//next three numbers should be digits
+				for (i = 0; i < 3; i++)
+				{
+					if (isdigit(phone[i + 4]) == false)
+					{
+						//not all digits this is invalid
+						result = INVALID;
+					}
+				}
+				//next digit must be a character to match format
+				if (validPhoneChars.find(phone[7]) == string::npos)
+				{
+					//format is  not consistant we cant use this
+					result = INVALID;
+					
+				}
+
+
+			}
+		}
+		//is a digit
+		else
+		{
+			printf("stuck\n");
+
+
+			//rest of numbers up to point must all be digits to follow format
+			for (i = 0; i < 7; i++)
+			{
+				if (isdigit(phone[i + 2]) == false)
+				{
+					//rest are not digits invalid
+					result = INVALID;
+				}
+
+			}
+
+			//phone number format is valid
+
+		}
+
 	}
 
-	printf("%d", result);
+	//Area code handling
+if (province == "ON")
+	{
+		if (areaCode == "226")
+		{
+		}
+		else if (areaCode == "249")
+		{
+		}
+		else if (areaCode == "289")
+		{
+		}
+		else if (areaCode == "343")
+		{
+		}
+		else if (areaCode == "365")
+		{
+		}
+		else if (areaCode == "416")
+		{
+		}
+		else if (areaCode == "437")
+		{
+		}
+		else if (areaCode == "519")
+		{
+			printf("correct area code");
+		}
+		else if (areaCode == "613")
+		{
+		}
+		else if (areaCode == "647")
+		{
+		}
+		else if (areaCode == "705")
+		{
+		}
+		else if (areaCode == "807")
+		{
+		}
+		else if (areaCode == "905")
+		{
+		}
+		else
+		{
+			result = INVALID;
+		}
+		
+	}
+	else if (province == "QC")
+	{
+
+		if (areaCode == "418")
+		{
+		}
+		else if (areaCode == "438")
+		{
+		}
+		else if (areaCode == "450")
+		{
+		}
+		else if (areaCode == "514")
+		{
+		}
+		else if (areaCode == "579")
+		{
+		}
+		else if (areaCode == "581")
+		{
+		}
+		else if (areaCode == "819")
+		{
+		}
+		else if (areaCode == "873")
+		{
+		}
+		else
+		{
+			result = INVALID;
+			
+		}
+	}
+	else if (province == "BC")
+	{
+
+		if (areaCode == "236")
+		{
+		}
+		else if (areaCode == "250")
+		{
+		}
+		else if (areaCode == "604")
+		{
+		}
+		else if (areaCode == "778")
+		{
+		}		
+		else
+		{
+			result = INVALID;
+		
+		}
+	}
+	else if (province == "AB")
+	{
+
+		if (areaCode == "403")
+		{
+		}
+		else if (areaCode == "587")
+		{
+		}
+		else if (areaCode == "780")
+		{
+		}	
+		else
+		{
+			result = INVALID;
+
+		}
+	}
+	else if (province == "MB")
+	{
+
+		if (areaCode == "204")
+		{
+		}
+		else if (areaCode == "431")
+		{
+		}
+		else
+		{
+			result = INVALID;
+		}
+	}
+	else if (province == "SK")
+	{
+
+		if (areaCode == "306")
+		{
+		}
+		else if (areaCode == "639")
+		{
+		}
+		else
+		{
+			result = INVALID;
+		}
+	}
+	else if (province == "PE")
+	{
+
+		if (areaCode == "902")
+		{
+		}
+		else if (areaCode == "782")
+		{
+		}
+		else
+		{
+			result = INVALID;
+		}
+	}
+	else if (province == "NB")
+	{
+		if (areaCode != "506")
+		{
+			result = INVALID;
+		
+		}
+	}
+	else if (province == "NL")
+	{
+		if (areaCode != "709")
+		{
+			result = INVALID;
+		
+		}
+	}
+	else if (province == "NS")
+	{
+		if (areaCode != "902")
+		{
+			result = INVALID;
+			
+		}
+	}
+	else if (province == "YT")
+	{
+		if (areaCode != "867")
+		{
+			result = INVALID;
+			
+		}
+	}
+	else if (province == "NU")
+	{
+		if (areaCode != "867")
+		{
+			result = INVALID;
+			
+		}
+	}
+	else if (province == "NT")
+	{
+		if (areaCode != "867")
+		{
+			result = INVALID;
+			
+		}
+	}
+
+
+
+
 	return result;
 	
-	
-
-}
+	}
