@@ -57,7 +57,80 @@ int validateName(string name)
 
 int validateStreet(string street)
 {
-	return 0;
+	int result = VALID;
+	char *kAllowedStreets[] = ALLOWED_STREETS;
+	char kDirections[] = DIRECTIONS;
+	string unit;
+	int house = 0;
+
+	if (street == "") {
+		result = EMPTY;
+	} else if (street.length() > STREET_MAX) {
+		result = INVALID;
+	} else {
+		istringstream ss(street);
+		// Separate the string by spaces and put into a vector
+		vector<string> parts{istream_iterator<string>{ss}, istream_iterator<string>{}};
+		size_t found = 0;
+
+		if (street.at(0) == ' ' || parts.size() < 3 || parts.size() > 4) {
+			result = INVALID;
+		} else {
+			// Parse the house unit and number
+			ss.clear();
+			ss.str(parts[0]);
+			if ((found = parts[0].find('-')) != string::npos && found != 0) {\
+				unit = parts[0].substr(0, found);
+				ss.str(parts[0].substr(found + 1));
+			}
+
+			if (!(ss >> house) || house < 0) {
+				result = INVALID;
+			}
+
+			// Make sure the street name only includes valid characters
+			for (int i = 0; i < parts[1].length(); i++) {
+				char c = parts[1].at(i);
+				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && c != '\'' && c != '-') {
+					result = INVALID;
+					break;
+				}
+			}
+
+			bool valid_street = false;
+			for (int i = 0; i < sizeof(kAllowedStreets)/sizeof(*kAllowedStreets); i++) {
+				if (parts[2] == kAllowedStreets[i]) {
+					valid_street = true;
+					break;
+				}
+			}
+
+			if (!valid_street) {
+				result = INVALID;
+			}
+
+			// If specified, check that the direction is valid
+			if (parts.size() == 4) {
+				bool valid_direction = false;
+
+				// Must be a valid direction and can only be followed by a '.' or nothing
+				if (parts[3].length() == 1 || (parts[3].length() == 2 && parts[3].at(1) == '.')) {
+					for (int i = 0; i < sizeof(kDirections); i++) {
+						if (parts[3].at(0) == kDirections[i]) {
+							valid_direction = true;
+							break;
+						}
+					}
+				}
+
+				if (!valid_direction) {
+					result = INVALID;
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 int validateCity(string city)
