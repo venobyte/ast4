@@ -20,8 +20,8 @@ int main(void)
 	};
 
 	struct info infos[10];
+	struct results result;
 
-	int result = INVALID;
 	int end = 0;
 	int i = 0;
 	int j = 0;
@@ -33,7 +33,7 @@ int main(void)
 
 	while (end == 0 && i != 10)
 	{
-		while (result == INVALID)
+		while (result.result == INVALID)
 		{
 
 			cout << "Enter name : \n";
@@ -41,87 +41,87 @@ int main(void)
 
 			result = validateName(input);
 
-			if (result == EMPTY)
+			if (result.result == EMPTY)
 			{
 				end = 1;
 			}
-			else if (result == INVALID)
+			else if (result.result == INVALID)
 			{
-				cout << "The name you entered is invalid. (Press enter if you wish to finish input)\n";
+				cout << result.error << "(Press enter if you wish to skip)\n";
 			}
-			else if (result == VALID)
+			else if (result.result == VALID)
 			{
 				infos[i].name.assign(input);
 			}
 		}
 
-		result = INVALID;
+		result.result = INVALID;
 
 		if (end == 0)
 		{
 
-			while (result == INVALID)
+			while (result.result == INVALID)
 			{
 				cout << "Enter street address : \n";
 				getline(cin, input);
 
 				result = validateStreet(input);
 
-				if (result == EMPTY)
+				if (result.result == EMPTY)
 				{
 					infos[i].street.assign("");
 				}
-				else if (result == INVALID)
+				else if (result.result == INVALID)
 				{
-					cout << "The street you entered is invalid. (Press enter if you wish to skip)\n";
+					cout << result.error << "(Press enter if you wish to skip)\n";
 				}
-				else if (result == VALID)
+				else if (result.result == VALID)
 				{
 					infos[i].street.assign(input);
 				}
 			}
 
-			result = INVALID;
+			result.result = INVALID;
 
-			while (result == INVALID)
+			while (result.result == INVALID)
 			{
 				cout << "Enter city : \n";
 				getline(cin, input);
 
 				result = validateCity(input);
 
-				if (result == EMPTY)
+				if (result.result == EMPTY)
 				{
 					infos[i].city.assign("");
 				}
-				else if (result == INVALID)
+				else if (result.result == INVALID)
 				{
-					cout << "The city you entered is invalid. (Press enter if you wish to skip)\n";
+					cout << result.error << "(Press enter if you wish to skip)\n";
 				}
-				else if (result == VALID)
+				else if (result.result == VALID)
 				{
 					infos[i].city.assign(input);
 				}
 			}
 
-			result = INVALID;
+			result.result = INVALID;
 
-			while (result == INVALID)
+			while (result.result == INVALID)
 			{
 				cout << "Enter province : \n";
 				getline(cin, input);
 
 				result = validateProvince(input);
 
-				if (result == EMPTY)
+				if (result.result == EMPTY)
 				{
 					infos[i].province.assign("");
 				}
-				else if (result == INVALID)
+				else if (result.result == INVALID)
 				{
-					cout << "The province you entered is invalid. (Press enter if you wish to skip)\n";
+					cout << result.error << "(Press enter if you wish to skip)\n";
 				}
-				else if (result == VALID)
+				else if (result.result == VALID)
 				{
 					//this will change the province to upper case.
 					for (j = 0; j < input.length(); j++)
@@ -133,24 +133,24 @@ int main(void)
 				}
 			}
 
-			result = INVALID;
+			result.result = INVALID;
 
-			while (result == INVALID)
+			while (result.result == INVALID)
 			{
 				cout << "Enter postal code : \n";
 				getline(cin, input);
 
 				result = validatePostal(input);
 
-				if (result == EMPTY)
+				if (result.result == EMPTY)
 				{
 					infos[i].postal.assign("");
 				}
-				else if (result == INVALID)
+				else if (result.result == INVALID)
 				{
-					cout << "The postal code you entered is invalid. (Press enter if you wish to skip)\n";
+					cout << result.error << "(Press enter if you wish to skip)\n";
 				}
-				else if (result == VALID)
+				else if (result.result == VALID)
 				{
 
 					//this will change the postal code to upper case.
@@ -163,30 +163,30 @@ int main(void)
 				}
 			}
 
-			result = INVALID;
+			result.result = INVALID;
 
-			while (result == INVALID)
+			while (result.result == INVALID)
 			{
 				cout << "Enter phone number : \n";
 				getline(cin, input);
 
 				result = validatePhone(input, infos[i].province);
 
-				if (result == EMPTY)
+				if (result.result == EMPTY)
 				{
 					infos[i].phone.assign("");
 				}
-				else if (result == INVALID)
+				else if (result.result == INVALID)
 				{
-					cout << "The phone number entered is invalid. (Press enter if you wish to skip)\n";
+					cout << result.error << "(Press enter if you wish to skip)\n";
 				}
-				else if (result == VALID)
+				else if (result.result == VALID)
 				{
 					infos[i].phone.assign(input);
 				}
 			}
 
-			result = INVALID;
+			result.result = INVALID;
 
 			i++;
 		}
@@ -198,16 +198,16 @@ int main(void)
 
 	if (infos[0].name == "")
 	{
-		cout << "There are no entries\n";
+		cout << "There are no entries.\n";
 	}
 	else
 	{
-		while (result == INVALID)
+		while (result.result == INVALID)
 		{
 
-			for (i = 0; i != end && result == INVALID; i++)
+			for (i = 0; i != end && result.result == INVALID; i++)
 			{
-				if (result == INVALID)
+				if (result.result == INVALID)
 				{
 					try
 					{
@@ -234,7 +234,7 @@ int main(void)
 					//if the user enters escape this will end the program
 					if (j == ESC)
 					{
-						result = VALID;
+						result.result = VALID;
 						i = end;
 					}
 					else
