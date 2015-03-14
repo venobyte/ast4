@@ -8,9 +8,10 @@ using namespace std;
 	Parameters: name - input passed in from the user
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validateName(string name)
+results validateName(string name)
 {
-	int result = VALID;
+	struct results result;
+	result.result = VALID;
 	int i = 0;
 	int position = 0;
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
@@ -31,24 +32,27 @@ int validateName(string name)
 
 	if (name == "")
 	{
-		result = EMPTY;
+		result.result = EMPTY;
 	}
 	else if (name.length() > NAME_MAX)
 	{
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Name is to long.\n";
 	}
 	//checks to see if the first letter is non-alphabetical
 	else if (name[0] == '-' || name[0] == '\'' || name[0] == '.' || name[0] == ' ')
 	{
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Name can't begin with non-alphabetic.\n";
 	}
 	//checks if there is any instance of an invalid character in the name string
 	else if (name.find_first_not_of(validName) != string::npos)
 	{
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Name has an invalid character, can only be letters, apostrophes, dashes, spaces, and periods.\n";
 	}
 	
-	for (i = 0; i < NAME_MAX && result != INVALID && result != EMPTY; i++)
+	for (i = 0; i < NAME_MAX && result.result != INVALID && result.result != EMPTY; i++)
 	{
 		position = name.find_first_of("-'. ");
 			
@@ -56,7 +60,8 @@ int validateName(string name)
 		{
 			if (name[position + 1] == '-' || name[position + 1] == '\'' || name[position + 1] == '.' || name[position + 1] == ' ')
 			{
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "Can't have more than one non-alphabetic character continuosly.\n";
 			}
 			else
 			{
@@ -74,18 +79,20 @@ int validateName(string name)
 	Parameters: street - input passed in from the user
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validateStreet(string street)
+results validateStreet(string street)
 {
-	int result = VALID;
+	struct results result;
+	result.result = VALID;
 	char *kAllowedStreets[] = ALLOWED_STREETS;
 	char kDirections[] = DIRECTIONS;
 	string unit;
 	int house = 0;
 
 	if (street == "") {
-		result = EMPTY;
+		result.result = EMPTY;
 	} else if (street.length() > STREET_MAX) {
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Street name is too long\n";
 	} else {
 		istringstream ss(street);
 		// Separate the string by spaces and put into a vector
@@ -93,7 +100,8 @@ int validateStreet(string street)
 		size_t found = 0;
 
 		if (street.at(0) == ' ' || parts.size() < 3 || parts.size() > 4) {
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Invalid street number\n";
 		} else {
 			// Parse the house unit and number
 			ss.clear();
@@ -104,14 +112,15 @@ int validateStreet(string street)
 			}
 
 			if (!(ss >> house) || house < 0) {
-				result = INVALID;
+				result.result = INVALID;
 			}
 
 			// Make sure the street name only includes valid characters
 			for (int i = 0; i < parts[1].length(); i++) {
 				char c = parts[1].at(i);
 				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && c != '\'' && c != '-') {
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Invalid characters in street name.\n";
 					break;
 				}
 			}
@@ -125,7 +134,8 @@ int validateStreet(string street)
 			}
 
 			if (!valid_street) {
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "Invalid street type.\n";
 			}
 
 			// If specified, check that the direction is valid
@@ -143,7 +153,8 @@ int validateStreet(string street)
 				}
 
 				if (!valid_direction) {
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Invalid street direction.\n";
 				}
 			}
 		}
@@ -158,19 +169,21 @@ int validateStreet(string street)
 	Parameters: city - input passed in from the user
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validateCity(string city)
+results validateCity(string city)
 {
-	int result = VALID;
+	struct results result;
+	result.result = VALID;
 
 	if (city == "")
 	{
 		// Field can be skipped if the first character is a character return.
-		return EMPTY;
+		result.result = EMPTY;
 	}
 	else if (city.length() > CITY_MAX)
 	{
 		// Too long
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "City name too long.\n";
 	}
 	else
 	{
@@ -184,12 +197,14 @@ int validateCity(string city)
 				if (i == 0)
 				{
 					// CANNOT start with this
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Can't start with a space.\n";
 				}
 				else if (city.at(i - 1) == ' ')
 				{
 					// CANNOT have two in a row
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Can't have two spaces in a row\n";
 				}
 			}
 			else if (chr == '-')
@@ -198,7 +213,8 @@ int validateCity(string city)
 				if (i == 0)
 				{
 					// CANNOT start with this
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Can't start with a -\n";
 				}
 			}
 			else if (chr == '.')
@@ -207,7 +223,8 @@ int validateCity(string city)
 				if (i == 0)
 				{
 					// CANNOT start with this
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Can't start with a period.\n";
 				}
 			}
 			else if (chr >= 'A' && chr <= 'Z')
@@ -221,7 +238,8 @@ int validateCity(string city)
 			else
 			{
 				// INVALID character
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "City must only consist of letters, spaces, dashes, and periods.\n";
 			}
 		}
 	}
@@ -235,19 +253,21 @@ int validateCity(string city)
 	Parameters: province- input passed in from the user
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validateProvince(string province)
+results validateProvince(string province)
 {
-	int result = INVALID;
+	struct results result;
+	result.result = INVALID;
 	char *kAllowedProvinces[] = ALLOWED_PROVINCES;
 
 	if (province == "")
 	{
 		// Field can be skipped if first character is a character return.
-		result = EMPTY;
+		result.result = EMPTY;
 	}
 	else if (province.length() > PROVINCE_MAX)
 	{
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Province can only be 2 characters long.\n";
 	}
 	else
 	{
@@ -258,13 +278,14 @@ int validateProvince(string province)
 		{
 			if (_stricmp(province.c_str(), str) == 0)
 			{
-				result = VALID;
+				result.result = VALID;
 				break;
 			}
 
 			str = kAllowedProvinces[++i];
 		}
 	}
+	result.error = "Province does not exist.\n";
 	return result;
 }
 
@@ -274,9 +295,10 @@ int validateProvince(string province)
 	Parameters: postal - input passed in from the user
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validatePostal(string postal)
+results validatePostal(string postal)
 {
-	int result = VALID;
+	struct results result;
+	result.result = VALID;
 	string firstValidLetter = "ABCEGHJKLMNPRSTVXY";
 	string validLetter = "ABCEGHJKLMNPRSTVWXYZ";
 	locale loc;
@@ -295,29 +317,33 @@ int validatePostal(string postal)
 
 	if (postal == "")
 	{
-		result = EMPTY;
+		result.result = EMPTY;
 	}
 	else if (postal.length() > POSTAL_MAX)
 	{
-		result = 1;
+		result.result = INVALID;
+		result.error = "Postal code is too long.\n";
 	}
 	else
 	{
 		//check against the valid letters for a postal code.
 		if (firstValidLetter.find(postal[0]) == string::npos)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "First character must be a letter and not be D, F, I, O, Q, U, W, or Z\n";
 		}
 		else if (isdigit(postal[1]) == false)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Second character must be a number\n";
 		}
 		else if (validLetter.find(postal[2]) == string::npos)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Third character must be a letter and not be D, F, I, O, Q, or U\n";
 		}
 
-		if (postal.length() == POSTAL_MAX && result != INVALID)
+		if (postal.length() == POSTAL_MAX && result.result != INVALID)
 		{
 			if (postal[3] == ' ')
 			{
@@ -325,25 +351,29 @@ int validatePostal(string postal)
 			}
 			else
 			{
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "There must be a space in the middle.\n";
 			}
 		}
-		else if (postal.length() == (POSTAL_MAX - 1) && result != INVALID)
+		else if (postal.length() == (POSTAL_MAX - 1) && result.result != INVALID)
 		{
 			postal = postal.substr(3, 3);
 		}
 
-		if (result != INVALID && isdigit(postal[0]) == false)
+		if (result.result != INVALID && isdigit(postal[0]) == false)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "The Fourth character must be a number\n";
 		}
-		else if (result != INVALID && validLetter.find(postal[1]) == string::npos)
+		else if (result.result != INVALID && validLetter.find(postal[1]) == string::npos)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "The Fifth character must be a letter and not be D, F, I, O, Q, or U\n";
 		}
-		else if (result != INVALID && isdigit(postal[2]) == false)
+		else if (result.result != INVALID && isdigit(postal[2]) == false)
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "The last character must be a number\n";
 		}
 
 	}
@@ -357,9 +387,10 @@ int validatePostal(string postal)
 	Parameters: phone - input passed in from the user province - province the user has set
 	Returns: result - whether the string is empty, valid, or invalid.
 */
-int validatePhone(string phone, string province)
+results validatePhone(string phone, string province)
 {
-	int result = VALID;
+	struct results result;
+	result.result = VALID;
 	int i = 0;
 	string validPhone = "1234567890-. ()";
 	string validPhoneChars = "-.";
@@ -370,19 +401,21 @@ int validatePhone(string phone, string province)
 	if (phone == "")
 	{
 		//we can skip if phone number is empty
-		result = EMPTY;
+		result.result = EMPTY;
 	}
 	//is phone number too long
 	else if (phone.length() > PHONE_MAX)
 	{
 		//too long has to invalid
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "Phone number is too long\n";
 	}
 	//check to make sure everything is valid before we even break it down
 	else if (phone.find_first_not_of(validPhone) != string::npos)
 	{
 		//if something not valid exists in number we dont need to continue
-		result = INVALID;
+		result.result = INVALID;
+		result.error = "There is an invalid character in the phone number\n";
 	}
 
 	//is user using brackets for area code
@@ -394,12 +427,14 @@ int validatePhone(string phone, string province)
 			if (isdigit(phone[i]) == false)
 			{
 				//the area code is not digits is invalid
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "There area is not comprised of all numbers\n";
 			}
 			// make sure space is after area code
 			else if (isspace(phone[5]) == false)
 			{
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "There is no space after the area code\n";
 			}
 
 			//lets make sure that closing bracket is there
@@ -416,7 +451,8 @@ int validatePhone(string phone, string province)
 					//if they are not digits its invalid
 					if (isdigit(phone[i + 6]) == false)
 					{
-						result = INVALID;
+						result.result = INVALID;
+						result.error = "The first three characters after the area code are not digits\n";
 					}
 				}
 				//next digit can contain peroid dash or any number check for number first
@@ -426,7 +462,8 @@ int validatePhone(string phone, string province)
 					if (validPhoneChars.find(phone[9]) == string::npos)
 					{
 						//not valid
-						result = INVALID;
+						result.result = INVALID;
+						result.error = "The character after the first 3 digits after the area code is not valid\n";
 					}
 					//if we get here we know it is a valid character and we can continue
 					else
@@ -437,7 +474,8 @@ int validatePhone(string phone, string province)
 							//if they are not it is invalid
 							if (isdigit(phone[i + 10]) == false)
 							{
-								result = INVALID;
+								result.result = INVALID;
+								result.error = "The last four characters are not digits\n";
 							}
 						}
 					}
@@ -451,7 +489,8 @@ int validatePhone(string phone, string province)
 						//if they are not it is invalid
 						if (isdigit(phone[i + 9]) == false)
 						{
-							result = INVALID;
+							result.result = INVALID;
+							result.error = "The last four characters are not digits\n";
 						}
 					}
 				}
@@ -472,7 +511,8 @@ int validatePhone(string phone, string province)
 			if (validPhoneChars.find(phone[3]) == string::npos)
 			{
 				//not Valid
-				result = INVALID;
+				result.result = INVALID;
+				result.error = "The character after the area code is not valid\n";
 			}
 			//if we get here it is a valid character
 			else
@@ -483,25 +523,23 @@ int validatePhone(string phone, string province)
 					if (isdigit(phone[i + 4]) == false)
 					{
 						//not all digits this is invalid
-						result = INVALID;
+						result.result = INVALID;
+						result.error = "The characters after the area code are not digits\n";
 					}
 				}
 				//next digit must be a character to match format
 				if (validPhoneChars.find(phone[7]) == string::npos)
 				{
 					//format is  not consistant we cant use this
-					result = INVALID;
-					
+					result.result = INVALID;
+					result.error = "The next character is not a digit, format is not consistent\n";			
 				}
-
 
 			}
 		}
 		//is a digit
 		else
 		{
-			printf("stuck\n");
-
 
 			//rest of numbers up to point must all be digits to follow format
 			for (i = 0; i < 7; i++)
@@ -509,7 +547,8 @@ int validatePhone(string phone, string province)
 				if (isdigit(phone[i + 2]) == false)
 				{
 					//rest are not digits invalid
-					result = INVALID;
+					result.result = INVALID;
+					result.error = "Phone number is not comprised of just digits.\n";
 				}
 
 			}
@@ -564,7 +603,8 @@ if (province == "ON")
 		}
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to ON.\n";
 		}
 		
 	}
@@ -597,8 +637,8 @@ if (province == "ON")
 		}
 		else
 		{
-			result = INVALID;
-			
+			result.result = INVALID;
+			result.error = "Area code does not belong to QC.\n";
 		}
 	}
 	else if (province == "BC")
@@ -618,7 +658,8 @@ if (province == "ON")
 		}		
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to BC.\n";
 		
 		}
 	}
@@ -636,7 +677,8 @@ if (province == "ON")
 		}	
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to AB.\n";
 
 		}
 	}
@@ -651,7 +693,8 @@ if (province == "ON")
 		}
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to MB\n";
 		}
 	}
 	else if (province == "SK")
@@ -665,7 +708,8 @@ if (province == "ON")
 		}
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to SK\n";
 		}
 	}
 	else if (province == "PE")
@@ -679,22 +723,24 @@ if (province == "ON")
 		}
 		else
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to PE\n";
 		}
 	}
 	else if (province == "NB")
 	{
 		if (areaCode != "506")
 		{
-			result = INVALID;
-		
+			result.result = INVALID;
+			result.error = "Area code does not belong to NB\n";
 		}
 	}
 	else if (province == "NL")
 	{
 		if (areaCode != "709")
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to NL\n";
 		
 		}
 	}
@@ -702,7 +748,8 @@ if (province == "ON")
 	{
 		if (areaCode != "902")
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to NS\n";
 			
 		}
 	}
@@ -710,7 +757,8 @@ if (province == "ON")
 	{
 		if (areaCode != "867")
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to YT\n";
 			
 		}
 	}
@@ -718,7 +766,8 @@ if (province == "ON")
 	{
 		if (areaCode != "867")
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to NU\n";
 			
 		}
 	}
@@ -726,7 +775,8 @@ if (province == "ON")
 	{
 		if (areaCode != "867")
 		{
-			result = INVALID;
+			result.result = INVALID;
+			result.error = "Area code does not belong to NT\n";
 			
 		}
 	}
