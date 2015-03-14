@@ -2,12 +2,31 @@
 
 using namespace std;
 
+/*
+	Function: validateName
+	Description: Function used to validate the name specified by the user.
+	Parameters: name - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validateName(string name)
 {
 	int result = VALID;
 	int i = 0;
 	int position = 0;
 	string validName = "abcdefghijklmnopqrstuvwxyz-'. ";
+	locale loc;
+
+	//used to convert the string passed in to lower case
+	for (i = 0; i < name.length(); i++)
+	{
+		try
+		{
+			name[i] = tolower(name[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 	if (name == "")
 	{
@@ -17,6 +36,7 @@ int validateName(string name)
 	{
 		result = INVALID;
 	}
+	//checks if there is any instance of an invalid character in the name string
 	else if (name.find_first_not_of(validName) != string::npos)
 	{
 		result = INVALID;
@@ -124,11 +144,30 @@ int validateProvince(string province)
 	return result;
 }
 
+/*
+	Function: validatePostal
+	Description: Function used to validate the postal code specified by the user.
+	Parameters: postal - input passed in from the user
+	Returns: result - whether the string is empty, valid, or invalid.
+*/
 int validatePostal(string postal)
 {
 	int result = VALID;
 	string firstValidLetter = "ABCEGHJKLMNPRSTVXY";
 	string validLetter = "ABCEGHJKLMNPRSTVWXYZ";
+	locale loc;
+
+	//used to convert the string passed in to upper case
+	for (int i = 0; i < postal.length(); i++)
+	{
+		try
+		{
+			postal[i] = toupper(postal[i], loc);
+		}
+		catch (exception& e)
+		{
+		}
+	}
 
 	if (postal == "")
 	{
@@ -140,7 +179,7 @@ int validatePostal(string postal)
 	}
 	else
 	{
-
+		//check against the valid letters for a postal code.
 		if (firstValidLetter.find(postal[0]) == string::npos)
 		{
 			result = INVALID;
@@ -234,9 +273,6 @@ int validatePhone(string phone)
 		
 	}
 
-	printf("%d", result);
 	return result;
-	
-	
 
 }
