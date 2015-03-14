@@ -28,9 +28,14 @@
 
 using namespace std;
 
-int validateName(string name);
-int validateStreet(string street);
-int validateCity(string city);
-int validateProvince(string province);
-int validatePostal(string postal);
-int validatePhone(string phone, string province);
+struct results{
+	int result = INVALID;
+	string error;
+};
+
+results validateName(string name);
+results validateStreet(string street);
+results validateCity(string city);
+results validateProvince(string province);
+results validatePostal(string postal);
+results validatePhone(string phone, string province);
