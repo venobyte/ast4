@@ -88,15 +88,43 @@ int validateCity(string city)
 		for (unsigned int i = 0; i < city.length(); i++)
 		{
 			char chr = city.at(i);
-			if (chr == 0x20)
+			if (chr == ' ')
 			{
-				// Space, valid
+				// Space
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+				else if (city.at(i - 1) == ' ')
+				{
+					// CANNOT have two in a row
+					result = INVALID;
+				}
 			}
-			else if (chr >= 0x41 && chr <= 0x90)
+			else if (chr == '-')
+			{
+				// Dash
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+			}
+			else if (chr == '.')
+			{
+				// Dot
+				if (i == 0)
+				{
+					// CANNOT start with this
+					result = INVALID;
+				}
+			}
+			else if (chr >= 'A' && chr <= 'Z')
 			{
 				// Upper case, valid
 			}
-			else if (chr >= 0x61 && chr <= 0x7A)
+			else if (chr >= 'a' && chr <= 'z')
 			{
 				// Lower case, valid
 			}
