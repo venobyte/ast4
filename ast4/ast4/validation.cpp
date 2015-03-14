@@ -456,7 +456,6 @@ if (province == "ON")
 		}
 		else if (areaCode == "519")
 		{
-			printf("correct area code");
 		}
 		else if (areaCode == "613")
 		{
