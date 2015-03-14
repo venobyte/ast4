@@ -36,6 +36,11 @@ int validateName(string name)
 	{
 		result = INVALID;
 	}
+	//checks to see if the first letter is non-alphabetical
+	else if (name[0] == '-' || name[0] == '\'' || name[0] == '.' || name[0] == ' ')
+	{
+		result = INVALID;
+	}
 	//checks if there is any instance of an invalid character in the name string
 	else if (name.find_first_not_of(validName) != string::npos)
 	{
